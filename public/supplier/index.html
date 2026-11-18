@@ -151,7 +151,7 @@
     <main>
       <section class="panel" aria-labelledby="catalog-heading">
         <h2 id="catalog-heading">Fictional Quote Catalog</h2>
-        <p class="note">Representative fictional supplier fixtures used for buyer relay evaluation under the $450 / 3-day threshold. Live scenario changes (delays, unrelated drift, deadline misses) are evaluated during buyer relay runs.</p>
+        <p class="note">Both vendors quote the same fictional replacement part. The buyer evaluates their quotes against a $450 budget and a three-day deadline.</p>
         <div class="table-wrap">
           <table>
             <thead>
@@ -166,17 +166,17 @@
             <tbody>
               <tr>
                 <td>Vendor A</td>
-                <td class="mono">DX-PUMP-401</td>
+                <td class="mono">EQ-CRIT-01</td>
                 <td>$380</td>
                 <td>2 days</td>
-                <td>Meets &lt;= $450 / 3d initially; slips to 5d in delay scenario.</td>
+                <td>Eligible at baseline, then slips to five days.</td>
               </tr>
               <tr>
                 <td>Vendor B</td>
-                <td class="mono">DX-PUMP-402</td>
-                <td>$470</td>
-                <td>2 days</td>
-                <td>Exceeds $450 policy cap in baseline fixture.</td>
+                <td class="mono">EQ-CRIT-01</td>
+                <td>$420</td>
+                <td>3 days</td>
+                <td>Becomes the backup when Vendor A slips, then moves to four days when both miss the deadline.</td>
               </tr>
             </tbody>
           </table>
@@ -185,7 +185,7 @@
 
       <section class="panel" aria-labelledby="files-heading" style="margin-top: 16px;">
         <h2 id="files-heading">Agent Files</h2>
-        <p class="note">Static links to published manifest, network descriptors, and buyer workspace.</p>
+        <p class="note">The buyer uses these files to discover and run the supplier network.</p>
         <ul class="links">
           <li>
             <a href="./agent-manifest.json">
@@ -199,31 +199,12 @@
               <span class="link-desc">Supplier peer network descriptor</span>
             </a>
           </li>
-          <li>
-            <a href="../buyer/buyer.network.json">
-              buyer.network.json
-              <span class="link-desc">Buyer relay network descriptor</span>
-            </a>
-          </li>
-          <li>
-            <a href="../buyer/agent.js">
-              buyer/agent.js
-              <span class="link-desc">Browser relay agent module</span>
-            </a>
-          </li>
-          <li>
-            <a href="../buyer/index.html">
-              Buyer Coordinator View
-              <span class="link-desc">Return to DeltaX Decision Relay UI</span>
-            </a>
-          </li>
         </ul>
       </section>
     </main>
 
     <footer class="footer">
       <span>DeltaX Decision Relay · Static supplier endpoint (no client scripts)</span>
-      <a href="../buyer/index.html">Back to buyer view</a>
     </footer>
   </div>
 </body>
