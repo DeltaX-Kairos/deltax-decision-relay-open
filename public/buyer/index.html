@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeltaX Decision Relay — Equipment Coordinator</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="eyebrow-row">
+          <span class="badge badge-fictional">Fictional Scenario</span>
+          <span class="badge badge-policy">Policy: up to $450 · within 3 days</span>
+          <span id="lane-badge" class="badge badge-lane">Local fixture</span>
+        </div>
+        <h1>DeltaX Decision Relay</h1>
+        <p class="subtitle">Trace how a buyer and supplier agent recover when a delivery quote changes.</p>
+      </div>
+      <div class="lane-controls" aria-label="Execution lane and session tools">
+        <fieldset id="lane-fieldset" class="lane-switch">
+          <legend class="visually-hidden">Decision lane</legend>
+          <label class="lane-option">
+            <input type="radio" name="lane" value="replay" checked>
+            <span>Local fixture</span>
+          </label>
+          <label class="lane-option">
+            <input type="radio" name="lane" value="hosted">
+            <span id="hosted-label">Hosted Evaluate (Unconfigured)</span>
+          </label>
+        </fieldset>
+        <div class="utility-actions">
+          <button type="button" id="btn-download" class="btn btn-secondary" disabled>Download evidence</button>
+          <button type="button" id="btn-reset" class="btn btn-secondary">Reset lane</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="live-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="workspace">
+      <section class="panel action-panel" aria-labelledby="actions-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="actions-heading">Coordinator Actions</h2>
+            <p class="panel-hint">Start with Review offers, then step through unchanged, unrelated drift, delay, and unavailable states.</p>
+          </div>
+          <span id="run-status-pill" class="status-pill status-idle">Ready</span>
+        </div>
+        <div id="phase-buttons" class="phase-grid">
+          <button type="button" class="btn btn-primary phase-btn" data-phase="initial">
+            <span class="step-num">1</span>
+            <span class="step-label">Review offers</span>
+          </button>
+          <button type="button" class="btn btn-action phase-btn" data-phase="unchanged">
+            <span class="step-num">2</span>
+            <span class="step-label">Recheck unchanged</span>
+          </button>
+          <button type="button" class="btn btn-action phase-btn" data-phase="unrelated">
+            <span class="step-num">3</span>
+            <span class="step-label">Update unrelated item</span>
+          </button>
+          <button type="button" class="btn btn-action phase-btn" data-phase="delay">
+            <span class="step-num">4</span>
+            <span class="step-label">Vendor A slips to 5 days</span>
+          </button>
+          <button type="button" class="btn btn-action phase-btn" data-phase="unavailable">
+            <span class="step-num">5</span>
+            <span class="step-label">Both offers miss deadline</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="error-panel" class="panel error-panel" role="alert" aria-live="assertive" hidden>
+        <div class="error-header">
+          <h2 id="error-title">Refusal / Error</h2>
+          <span id="error-code-badge" class="badge badge-refused">Stopped</span>
+        </div>
+        <p id="error-message" class="error-message"></p>
+        <div id="error-actions" class="error-actions" hidden>
+          <button type="button" id="btn-retry-config" class="btn btn-secondary">Retry configuration</button>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <div class="column-main">
+          <section class="panel outcome-panel" aria-labelledby="outcome-heading" aria-live="polite">
+            <div class="panel-header">
+              <h2 id="outcome-heading">Decision Outcome</h2>
+              <span id="outcome-status-badge" class="badge badge-neutral">Awaiting run</span>
+            </div>
+            <p id="outcome-reason" class="outcome-reason">Run Review offers to inspect fictional supplier quotes and policy evaluation.</p>
+            <dl class="metric-grid">
+              <div class="metric-card">
+                <dt>Source</dt>
+                <dd id="metric-source">—</dd>
+              </div>
+              <div class="metric-card">
+                <dt>Baseline Choice</dt>
+                <dd id="metric-baseline">—</dd>
+              </div>
+              <div class="metric-card">
+                <dt>Hosted Attempts</dt>
+                <dd id="metric-calls">—</dd>
+              </div>
+              <div class="metric-card">
+                <dt>Elapsed</dt>
+                <dd id="metric-elapsed">—</dd>
+              </div>
+            </dl>
+            <div id="selected-quote-callout" class="selected-callout" hidden>
+              <span class="callout-label">Selected quote</span>
+              <span id="selected-quote-text" class="callout-value"></span>
+            </div>
+          </section>
+
+          <section class="panel quotes-panel" aria-labelledby="quotes-heading">
+            <div class="panel-header">
+              <div>
+                <h2 id="quotes-heading">Supplier Quotes</h2>
+                <p class="panel-hint">The equipment must arrive within three days and cost $450 or less.</p>
+              </div>
+            </div>
+            <div id="quotes-empty" class="empty-state">No quotes loaded yet. Select Review offers to request scoped quotes.</div>
+            <ul id="quotes-list" class="quotes-list" hidden></ul>
+          </section>
+        </div>
+
+        <div class="column-side">
+          <section class="panel receipt-panel" aria-labelledby="receipt-heading" aria-live="polite">
+            <div class="panel-header">
+              <h2 id="receipt-heading">Decision Receipt</h2>
+              <span id="receipt-state-badge" class="badge badge-neutral">No receipt</span>
+            </div>
+            <dl class="receipt-details">
+              <div class="detail-row">
+                <dt>Source</dt>
+                <dd id="receipt-source">—</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Prior basis</dt>
+                <dd id="receipt-prior-basis">None</dd>
+              </div>
+              <div class="detail-row">
+                <dt>New basis</dt>
+                <dd id="receipt-new-basis">None</dd>
+              </div>
+              <div class="detail-row">
+                <dt>ID / Digest</dt>
+                <dd id="receipt-digest" class="mono">Not present</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Reason</dt>
+                <dd id="receipt-reason">—</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel trace-panel" aria-labelledby="trace-heading">
+            <div class="panel-header">
+              <div>
+                <h2 id="trace-heading">Relay Trace</h2>
+                <p id="trace-caption" class="panel-hint">Structured events emitted by the browser relay agent.</p>
+              </div>
+              <span id="trace-count" class="badge badge-neutral">0 events</span>
+            </div>
+            <div id="trace-empty" class="empty-state">No events recorded yet.</div>
+            <ol id="trace-list" class="trace-list" aria-live="polite" hidden></ol>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links" aria-label="Published agent artifacts">
+        <span class="footer-label">Artifacts:</span>
+        <a href="./agent-manifest.json">agent-manifest.json</a>
+        <a href="./buyer.network.json">buyer.network.json</a>
+        <a href="./benchmark.json">Recorded benchmark</a>
+        <a id="link-supplier" href="../supplier/index.html">Supplier page</a>
+      </div>
+      <div class="footer-meta" id="config-summary">
+        <span>Router: <strong id="cfg-router">Loading…</strong></span>
+        <span>Model: <strong id="cfg-model">—</strong></span>
+        <span>Origins: <strong id="cfg-origins">—</strong></span>
+      </div>
+    </footer>
+  </div>
+
+  <dialog id="consent-dialog" class="consent-dialog" aria-labelledby="consent-title" aria-describedby="consent-desc">
+    <form method="dialog" class="consent-card">
+      <div class="consent-header">
+        <span class="badge badge-policy">Trust Approval</span>
+        <h2 id="consent-title">Approve Delegated Request</h2>
+      </div>
+      <p id="consent-desc" class="consent-desc">Review the peer origin, purpose, and exact delegated request before allowing this browser relay step.</p>
+      <dl class="consent-meta">
+        <div class="detail-row">
+          <dt>Origin</dt>
+          <dd id="consent-origin" class="mono"></dd>
+        </div>
+        <div class="detail-row">
+          <dt>Purpose</dt>
+          <dd id="consent-purpose"></dd>
+        </div>
+      </dl>
+      <div class="consent-payload-wrap">
+        <span class="payload-label">Exact delegated request</span>
+        <pre id="consent-request" class="consent-request"></pre>
+      </div>
+      <div class="consent-actions">
+        <button type="button" id="consent-decline" class="btn btn-secondary">Decline</button>
+        <button type="button" id="consent-always" class="btn btn-secondary">Always allow for this browser session</button>
+        <button type="button" id="consent-allow" class="btn btn-primary">Allow once</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

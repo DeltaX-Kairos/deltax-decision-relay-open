@@ -1,0 +1,345 @@
+{
+  "label": "Recorded hosted benchmark",
+  "date": "2026-11-18",
+  "scenario": "EQ-CRIT-01 x1 us-west",
+  "method": "The same five fictional phases ran through deterministic local policy, hosted review with reuse, and hosted review without reuse. Elapsed milliseconds cover the decision request, not the browser model.",
+  "lanes": {
+    "replay": {
+      "attempts": 0,
+      "alignedWithBaseline": 5,
+      "elapsedMs": 25.7,
+      "abstentions": 1
+    },
+    "hosted": {
+      "attempts": 2,
+      "alignedWithBaseline": 5,
+      "elapsedMs": 4737.49,
+      "abstentions": 1
+    },
+    "hosted-no-reuse": {
+      "attempts": 4,
+      "alignedWithBaseline": 5,
+      "elapsedMs": 6996.17,
+      "abstentions": 1
+    }
+  },
+  "rows": [
+    {
+      "lane": "replay",
+      "phase": "initial",
+      "status": "selected",
+      "source": "local-fixture",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 0,
+      "elapsedMs": 16.05,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8"
+    },
+    {
+      "lane": "replay",
+      "phase": "unchanged",
+      "status": "selected",
+      "source": "local-fixture",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 0,
+      "elapsedMs": 2.72,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8"
+    },
+    {
+      "lane": "replay",
+      "phase": "unrelated",
+      "status": "selected",
+      "source": "local-fixture",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 0,
+      "elapsedMs": 2.05,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8"
+    },
+    {
+      "lane": "replay",
+      "phase": "delay",
+      "status": "selected",
+      "source": "local-fixture",
+      "chosenVendorId": "vendor-b",
+      "baselineVendorId": "vendor-b",
+      "providerCalls": 0,
+      "elapsedMs": 3.14,
+      "dependencyDigest": "bec5e4c2d43ba73c9f488968834afec75540360918fd2dcc0f272fb05e81ef80"
+    },
+    {
+      "lane": "replay",
+      "phase": "unavailable",
+      "status": "abstained",
+      "source": "local-fixture",
+      "chosenVendorId": null,
+      "baselineVendorId": null,
+      "providerCalls": 0,
+      "elapsedMs": 1.74,
+      "dependencyDigest": "022cd4a06dbd90295d0168801122e1f84c81fffa29e99908ed5bad7dd2615e4e"
+    },
+    {
+      "lane": "hosted",
+      "phase": "initial",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 1,
+      "elapsedMs": 2964.72,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "e005788ad7c22b714dc938f9aea8f1cdabae1e9e8ef4b6fd5adb3de54433c737",
+        "receiptDigest": "0a92e11fad76aea2e8a71f641ed244f7cf57d35110af2829cb1a91fa3d0589cc",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted",
+      "phase": "unchanged",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 0,
+      "elapsedMs": 2.3,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "e005788ad7c22b714dc938f9aea8f1cdabae1e9e8ef4b6fd5adb3de54433c737",
+        "receiptDigest": "0a92e11fad76aea2e8a71f641ed244f7cf57d35110af2829cb1a91fa3d0589cc",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted",
+      "phase": "unrelated",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 0,
+      "elapsedMs": 2.69,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "e005788ad7c22b714dc938f9aea8f1cdabae1e9e8ef4b6fd5adb3de54433c737",
+        "receiptDigest": "0a92e11fad76aea2e8a71f641ed244f7cf57d35110af2829cb1a91fa3d0589cc",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted",
+      "phase": "delay",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-b",
+      "baselineVendorId": "vendor-b",
+      "providerCalls": 1,
+      "elapsedMs": 1765.4,
+      "dependencyDigest": "bec5e4c2d43ba73c9f488968834afec75540360918fd2dcc0f272fb05e81ef80",
+      "providerProof": {
+        "requestDigest": "56611484f4e3c2828c562cdbc81e6b518bae4bf87fc38fe6ca5bbbb11cef5a68",
+        "receiptDigest": "b2e1c32083848db837219127dbafabeb96c017f9b8b868fbc650a0f64e6eb944",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted",
+      "phase": "unavailable",
+      "status": "abstained",
+      "source": "local-policy",
+      "chosenVendorId": null,
+      "baselineVendorId": null,
+      "providerCalls": 0,
+      "elapsedMs": 2.38,
+      "dependencyDigest": "022cd4a06dbd90295d0168801122e1f84c81fffa29e99908ed5bad7dd2615e4e"
+    },
+    {
+      "lane": "hosted-no-reuse",
+      "phase": "initial",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 1,
+      "elapsedMs": 1839.08,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "4f644bce65a5cb33d6b9be61433f78b90dcdf372d3b5c23da18f46d7de23c37d",
+        "receiptDigest": "16b06a55743ab44a67e67b5997ace30fcf99cf7f3b9f7d50837d1d03a930b41e",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted-no-reuse",
+      "phase": "unchanged",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 1,
+      "elapsedMs": 1676.1,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "1c44340843112ffb6c4229f43a7aa727c8356021370a01c11e3c091f8f7ddb9c",
+        "receiptDigest": "a92ff75c66a92d4e55ed1099208b8f7843ae04b9a51322505cd2a31c33de843f",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted-no-reuse",
+      "phase": "unrelated",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-a",
+      "baselineVendorId": "vendor-a",
+      "providerCalls": 1,
+      "elapsedMs": 1626.37,
+      "dependencyDigest": "6b41cc805f61d82916de31c09e2e1b26409f813ff04e88e04aabfa8fdfbe0fd8",
+      "providerProof": {
+        "requestDigest": "43d46bc16f556903a2909806416eef09d9185d80da7c17fce1f18475d0afbaf8",
+        "receiptDigest": "96aeeb4d9274b2cdf7b31b310e8830c25fe505f004a614e052aab4c14af54918",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted-no-reuse",
+      "phase": "delay",
+      "status": "selected",
+      "source": "hosted-evaluate",
+      "chosenVendorId": "vendor-b",
+      "baselineVendorId": "vendor-b",
+      "providerCalls": 1,
+      "elapsedMs": 1851.8,
+      "dependencyDigest": "bec5e4c2d43ba73c9f488968834afec75540360918fd2dcc0f272fb05e81ef80",
+      "providerProof": {
+        "requestDigest": "a0da491d0a69232da30d120f2a3fda365c0dd7b832e622230ec897f36402c4f5",
+        "receiptDigest": "06ef35de83376cf8602c8fb7e278794427b0f0147adc4123dcb1528caac55880",
+        "policyDigest": "4ade5f6da0dff463ab0b8dc28633e3e087fae4beeef55cb81e027e1cb0fe5e20",
+        "gateIds": [
+          "HES-G01",
+          "HES-G02",
+          "HES-G03",
+          "HES-G04",
+          "HES-G05",
+          "HES-G06",
+          "HES-G07",
+          "HES-G08",
+          "HES-G09",
+          "HES-G10",
+          "HES-G11",
+          "HES-G12"
+        ]
+      }
+    },
+    {
+      "lane": "hosted-no-reuse",
+      "phase": "unavailable",
+      "status": "abstained",
+      "source": "local-policy",
+      "chosenVendorId": null,
+      "baselineVendorId": null,
+      "providerCalls": 0,
+      "elapsedMs": 2.82,
+      "dependencyDigest": "022cd4a06dbd90295d0168801122e1f84c81fffa29e99908ed5bad7dd2615e4e"
+    }
+  ]
+}

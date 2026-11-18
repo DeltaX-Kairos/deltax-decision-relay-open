@@ -1,0 +1,7 @@
+DeltaX Decision Relay
+Copyright 2026 Dominick Noval
+
+The included browser runtime derives from Cognizant AI Lab's agentic-web
+reference implementation and the nsDeploy browser runtime. The runtime
+retains its Apache License, original README, and provenance notice at
+public/buyer/runtime/.

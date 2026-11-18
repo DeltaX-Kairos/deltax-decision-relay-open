@@ -1,0 +1,15 @@
+{
+  "name": "deltax-decision-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local deterministic decision replay and fair baseline starter for DeltaX Decision Relay.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "node src/live-server.js",
+    "test": "node --test test/*.test.js",
+    "benchmark": "node scripts/run-benchmark.js"
+  }
+}

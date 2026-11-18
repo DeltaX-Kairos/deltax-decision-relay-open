@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeltaX Supplier Peer — Read-Only Catalog</title>
+  <style>
+    :root {
+      --navy: #0f1b2d;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --ivory: #f8f6f1;
+      --white: #ffffff;
+      --orange: #e85d1a;
+      --orange-soft: #fff1ea;
+      --amber-fg: #7c2d12;
+      --blue-bg: #e0ecf8;
+      --blue-fg: #1e3a5f;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--navy);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .shell {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .header {
+      background: var(--navy);
+      color: var(--ivory);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 650;
+    }
+    .badge-readonly { background: rgba(255,255,255,0.14); color: var(--ivory); border: 1px solid rgba(255,255,255,0.2); }
+    .badge-fictional { background: var(--orange-soft); color: var(--amber-fg); }
+    h1 { margin: 0; font-size: 1.35rem; color: var(--white); }
+    h2 { margin: 0 0 8px; font-size: 1rem; color: var(--navy); }
+    .subtitle { margin: 4px 0 0; color: var(--slate-300); font-size: 0.9rem; }
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .note {
+      margin: 0 0 12px;
+      color: var(--slate-700);
+      font-size: 0.9rem;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    th {
+      color: var(--slate-500);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--ivory);
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.84rem;
+    }
+    .links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .links a {
+      display: block;
+      padding: 10px 12px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      background: var(--ivory);
+      color: var(--navy);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .links a:hover {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+    }
+    .links a:focus-visible {
+      outline: 2px solid var(--orange);
+      outline-offset: 2px;
+    }
+    .link-desc {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+    .footer {
+      font-size: 0.82rem;
+      color: var(--slate-500);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .footer a { color: var(--navy); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="header">
+      <div class="badges">
+        <span class="badge badge-readonly">Read-Only Peer Page</span>
+        <span class="badge badge-fictional">Fictional Quote Data</span>
+      </div>
+      <h1>DeltaX Supplier Peer</h1>
+      <p class="subtitle">Static read-only reference for scoped equipment quotes and published agent files.</p>
+    </header>
+
+    <main>
+      <section class="panel" aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading">Fictional Quote Catalog</h2>
+        <p class="note">Representative fictional supplier fixtures used for buyer relay evaluation under the $450 / 3-day threshold. Live scenario changes (delays, unrelated drift, deadline misses) are evaluated during buyer relay runs.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vendor</th>
+                <th>SKU</th>
+                <th>Baseline USD</th>
+                <th>Baseline Lead Time</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vendor A</td>
+                <td class="mono">DX-PUMP-401</td>
+                <td>$380</td>
+                <td>2 days</td>
+                <td>Meets &lt;= $450 / 3d initially; slips to 5d in delay scenario.</td>
+              </tr>
+              <tr>
+                <td>Vendor B</td>
+                <td class="mono">DX-PUMP-402</td>
+                <td>$470</td>
+                <td>2 days</td>
+                <td>Exceeds $450 policy cap in baseline fixture.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="files-heading" style="margin-top: 16px;">
+        <h2 id="files-heading">Agent Files</h2>
+        <p class="note">Static links to published manifest, network descriptors, and buyer workspace.</p>
+        <ul class="links">
+          <li>
+            <a href="./agent-manifest.json">
+              agent-manifest.json
+              <span class="link-desc">Supplier published agent manifest</span>
+            </a>
+          </li>
+          <li>
+            <a href="./supplier.network.json">
+              supplier.network.json
+              <span class="link-desc">Supplier peer network descriptor</span>
+            </a>
+          </li>
+          <li>
+            <a href="../buyer/buyer.network.json">
+              buyer.network.json
+              <span class="link-desc">Buyer relay network descriptor</span>
+            </a>
+          </li>
+          <li>
+            <a href="../buyer/agent.js">
+              buyer/agent.js
+              <span class="link-desc">Browser relay agent module</span>
+            </a>
+          </li>
+          <li>
+            <a href="../buyer/index.html">
+              Buyer Coordinator View
+              <span class="link-desc">Return to DeltaX Decision Relay UI</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>DeltaX Decision Relay · Static supplier endpoint (no client scripts)</span>
+      <a href="../buyer/index.html">Back to buyer view</a>
+    </footer>
+  </div>
+</body>
+</html>

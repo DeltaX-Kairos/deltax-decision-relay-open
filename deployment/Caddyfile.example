@@ -1,0 +1,21 @@
+# Decision Relay reverse proxy example for Ubuntu / Caddy v2
+# Uses Caddy automatic HTTPS (ACME) with no payload interception.
+# Forwards original Host header to exact loopback-only service ports.
+
+relay.deltaxevaluate.com {
+	reverse_proxy 127.0.0.1:19170 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		flush_interval -1
+	}
+}
+
+relay-supplier.deltaxevaluate.com {
+	reverse_proxy 127.0.0.1:19171 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		flush_interval -1
+	}
+}

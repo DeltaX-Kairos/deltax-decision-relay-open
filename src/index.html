@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeltaX Decision Relay — Local Fixture Replay</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding: 20px;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 16px; }
+    .banner {
+      background: #172554;
+      border: 1px solid #3b82f6;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    h1, h2 { margin: 0 0 8px; font-weight: 600; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 15px; color: var(--accent); }
+    .muted { color: var(--muted); font-size: 13px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+    input {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      width: 130px;
+      font-size: 14px;
+    }
+    button {
+      background: var(--accent);
+      color: #082f49;
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #334155;
+      color: var(--text);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #334155;
+    }
+    .pill.ok { background: #14532d; color: #86efac; }
+    .pill.warn { background: #78350f; color: #fde68a; }
+    .pill.bad { background: #7f1d1d; color: #fca5a5; }
+    code { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="banner">
+      <div><strong>LOCAL FIXTURE REPLAY</strong> — Source: <code>local-fixture-replay</code> | Digests verify fixture integrity only (no provider signature or purchase order authority).</div>
+      <div>Hosted API: <code>Deferred (Not Dispatched)</code> | Outbound Network: <code>Disabled</code></div>
+    </div>
+
+    <section class="card">
+      <h1>DeltaX Decision Relay — Checkpoint 1</h1>
+      <p class="muted">Time-critical procurement replay (<code>EQ-CRIT-01</code>, count <code>1</code>, region <code>us-west</code>) comparing a same-input fair baseline against dependency-bound receipt replay.</p>
+      <div class="controls">
+        <label>Max Cost ($)<input id="maxCost" type="number" min="1" step="1" value="450"></label>
+        <label>Max Lead Time (days)<input id="maxDays" type="number" min="1" step="1" value="3"></label>
+        <button id="runBtn" type="button">Run Replay &amp; Baseline</button>
+        <button id="benchBtn" class="secondary" type="button">Run Benchmark (200x repeat of 1 case)</button>
+      </div>
+      <p id="statusLine" class="muted"></p>
+    </section>
+
+    <section class="card">
+      <h2>Fair Baseline vs Receipt Replay Metrics</h2>
+      <table>
+        <thead>
+          <tr><th>Mode</th><th>Valid Actions</th><th>Stale Uses</th><th>Local Quote Checks</th><th>Reuses</th><th>Invalidations</th><th>Abstentions</th><th>Fixture Agreement</th></tr>
+        </thead>
+        <tbody id="metricsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Step-by-Step Decision Trace</h2>
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Quotes</th><th>Baseline</th><th>Receipt Replay</th><th>Source &amp; Digest</th><th>Reason</th></tr>
+        </thead>
+        <tbody id="stepsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Fail-Closed Tamper Verification &amp; Benchmark</h2>
+      <div id="tamperBox" class="muted"></div>
+      <div id="benchBox" class="muted" style="margin-top:8px;"></div>
+    </section>
+  </main>
+
+  <script>
+    const el = (id) => document.getElementById(id);
+
+    function pill(text, tone) {
+      const span = document.createElement("span");
+      span.className = `pill ${tone}`;
+      span.textContent = text;
+      return span;
+    }
+
+    function renderMetrics(data) {
+      const tbody = el("metricsBody");
+      tbody.replaceChildren();
+      const rows = [
+        ["Fair Baseline", data.metrics.baseline],
+        ["Receipt Replay", data.metrics.replay]
+      ];
+      for (const [name, m] of rows) {
+        const tr = document.createElement("tr");
+        const vals = [
+          name,
+          String(m.validActions),
+          String(m.staleUses),
+          String(m.evalCalls),
+          String(m.reuses),
+          String(m.invalidations),
+          String(m.abstentions),
+          `${m.accuracyMatches}/${data.metrics.stepsCount}`
+        ];
+        for (const v of vals) {
+          const td = document.createElement("td");
+          td.textContent = v;
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+      el("statusLine").textContent =
+        `Label: ${data.label} | Policy: <= $${data.policy.maxCost}, <= ${data.policy.maxDays}d | ` +
+        `Saved local quote checks: ${data.metrics.savedEvalCalls} | Fixture agreement tie: ${data.metrics.accuracyTie}`;
+    }
+
+    function renderSteps(data) {
+      const tbody = el("stepsBody");
+      tbody.replaceChildren();
+      for (const s of data.steps) {
+        const tr = document.createElement("tr");
+
+        const tdLabel = document.createElement("td");
+        tdLabel.textContent = s.label;
+
+        const tdQuotes = document.createElement("td");
+        tdQuotes.textContent = s.quotes
+          .map((q) => `${q.name}: $${q.cost}/${q.days}d (r${q.revision})`)
+          .join(" | ");
+
+        const tdBase = document.createElement("td");
+        tdBase.textContent = `${s.baseline.status}: ${s.baseline.selectedVendorId ?? "none"} (${s.baseline.evalCalls} quote checks)`;
+
+        const tdReplay = document.createElement("td");
+        const tone = s.replay.action === "reused"
+          ? "ok"
+          : (s.replay.status === "abstained" ? "bad" : "warn");
+        tdReplay.appendChild(pill(s.replay.action, tone));
+        const selText = document.createElement("div");
+        selText.textContent = `${s.replay.status}: ${s.replay.selectedVendorId ?? "none"} (${s.replay.evalCalls} quote checks)`;
+        tdReplay.appendChild(selText);
+
+        const tdSource = document.createElement("td");
+        tdSource.textContent = `${s.replay.source} | ${s.replay.evidenceDigest.slice(0, 12)}...`;
+
+        const tdReason = document.createElement("td");
+        tdReason.textContent = s.replay.reason;
+
+        tr.append(tdLabel, tdQuotes, tdBase, tdReplay, tdSource, tdReason);
+        tbody.appendChild(tr);
+      }
+    }
+
+    function renderTamper(tamperProbe) {
+      const box = el("tamperBox");
+      box.textContent = `Tamper probes all rejected (fail-closed): ${tamperProbe.allRejected} — ` +
+        tamperProbe.probes.map((p) => `${p.name}: ${p.reason}`).join(" | ");
+    }
+
+    async function loadReplay() {
+      const maxCost = Number(el("maxCost").value);
+      const maxDays = Number(el("maxDays").value);
+      const res = await fetch("/api/replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ maxCost, maxDays })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        el("statusLine").textContent = `Error: ${data.error}`;
+        return;
+      }
+      renderMetrics(data);
+      renderSteps(data);
+      renderTamper(data.tamperProbe);
+    }
+
+    async function loadBenchmark() {
+      const res = await fetch("/api/benchmark?rounds=200");
+      const b = await res.json();
+      el("benchBox").textContent =
+        `Benchmark (${b.rounds} rounds repeating one 5-step fixture case, deterministic=${b.deterministic}): ` +
+        `Baseline quote checks=${b.totals.baselineEvalCalls}, Replay quote checks=${b.totals.replayEvalCalls}, ` +
+        `Saved=${b.totals.savedEvalCalls}, Stale uses=${b.totals.replayStaleUses}, Fixture agreement tie=${b.totals.accuracyTie}`;
+    }
+
+    el("runBtn").addEventListener("click", loadReplay);
+    el("benchBtn").addEventListener("click", loadBenchmark);
+    loadReplay();
+  </script>
+</body>
+</html>
